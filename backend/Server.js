@@ -37,7 +37,7 @@ app.use(errorHandler);
 // Database connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/rideshare', {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://rideshareuovt:sof21b233ride@ridesharecluster.pny1sxw.mongodb.net/?appName=RideShareCluster', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
