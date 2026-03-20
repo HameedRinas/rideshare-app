@@ -59,4 +59,22 @@ connectDB().then(() => {
   });
 });
 
+// Add a simple root route for health checks
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'RideShare API is running',
+    status: 'healthy',
+    time: new Date().toISOString(),
+    endpoints: {
+      health: '/api/health',
+      api: '/api'
+    }
+  });
+});
+
+// Add a health check at root (Koyeb might prefer this)
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', time: new Date().toISOString() });
+});
+
 module.exports = app;
