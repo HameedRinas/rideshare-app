@@ -141,6 +141,7 @@ const Register = () => {
           vehicleModel: values.vehicleModel,
           vehicleColor: values.vehicleColor,
           vehiclePlateNumber: values.vehiclePlate,
+          availableSeats: 4,
           isVerified: false,
           isStudent: false
         };
