@@ -137,7 +137,7 @@ const Register = () => {
       if (values.userType === 'driver') {
         userData.driverDetails = {
           licenseNumber: values.driverLicense,
-          vehicleType: values.vehicleType,
+          vehicleType: values.vehicleType || 'car',
           vehicleModel: values.vehicleModel,
           vehicleColor: values.vehicleColor,
           vehiclePlateNumber: values.vehiclePlate,
