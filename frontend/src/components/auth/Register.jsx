@@ -239,7 +239,7 @@ const Register = () => {
               </label>
               <input
                 id="name"
-                name="name"
+                name="vehicleType"
                 type="text"
                 className={`mt-1 block w-full px-3 py-2 border rounded-md ${
                   formik.touched.name && formik.errors.name
