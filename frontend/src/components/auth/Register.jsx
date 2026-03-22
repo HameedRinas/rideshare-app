@@ -46,7 +46,11 @@ const RegisterSchema = Yup.object({
     then: () => Yup.string().required('Driver license is required'),
     otherwise: () => Yup.string().notRequired()
   }),
-  
+  vehicleType: Yup.string().when('userType', {  // ← ADD THIS
+  is: 'driver',
+  then: () => Yup.string().required('Vehicle type is required'),
+  otherwise: () => Yup.string().notRequired()
+}),
   vehicleModel: Yup.string().when('userType', {
     is: 'driver',
     then: () => Yup.string().required('Vehicle model is required'),
@@ -98,6 +102,7 @@ const Register = () => {
       university: '',
       phone: '',
       driverLicense: '',
+      vehicleType: '',
       vehicleModel: '',
       vehicleColor: '',
       vehiclePlate: ''
@@ -132,6 +137,7 @@ const Register = () => {
       if (values.userType === 'driver') {
         userData.driverDetails = {
           licenseNumber: values.driverLicense,
+          vehicleType: values.vehicleType,
           vehicleModel: values.vehicleModel,
           vehicleColor: values.vehicleColor,
           vehiclePlateNumber: values.vehiclePlate,
@@ -342,91 +348,118 @@ const Register = () => {
 
             {/* Driver-specific fields */}
             {userType === 'driver' && (
-              <>
-                <div>
-                  <label htmlFor="driverLicense" className="block text-sm font-medium text-gray-700">
-                    Driver License Number
-                  </label>
-                  <input
-                    id="driverLicense"
-                    name="driverLicense"
-                    type="text"
-                    className={`mt-1 block w-full px-3 py-2 border rounded-md ${
-                      formik.touched.driverLicense && formik.errors.driverLicense
-                        ? 'border-red-300'
-                        : 'border-gray-300'
-                    }`}
-                    {...formik.getFieldProps('driverLicense')}
-                  />
-                  {formik.touched.driverLicense && formik.errors.driverLicense && (
-                    <p className="text-red-500 text-xs mt-1">{formik.errors.driverLicense}</p>
-                  )}
-                </div>
+  <>
+    <div>
+      <label htmlFor="driverLicense" className="block text-sm font-medium text-gray-700">
+        Driver License Number
+      </label>
+      <input
+        id="driverLicense"
+        name="driverLicense"
+        type="text"
+        className={`mt-1 block w-full px-3 py-2 border rounded-md ${
+          formik.touched.driverLicense && formik.errors.driverLicense
+            ? 'border-red-300'
+            : 'border-gray-300'
+        }`}
+        {...formik.getFieldProps('driverLicense')}
+      />
+      {formik.touched.driverLicense && formik.errors.driverLicense && (
+        <p className="text-red-500 text-xs mt-1">{formik.errors.driverLicense}</p>
+      )}
+    </div>
 
-                <div>
-                  <label htmlFor="vehicleModel" className="block text-sm font-medium text-gray-700">
-                    Vehicle Model
-                  </label>
-                  <input
-                    id="vehicleModel"
-                    name="vehicleModel"
-                    type="text"
-                    placeholder="e.g., Toyota Camry"
-                    className={`mt-1 block w-full px-3 py-2 border rounded-md ${
-                      formik.touched.vehicleModel && formik.errors.vehicleModel
-                        ? 'border-red-300'
-                        : 'border-gray-300'
-                    }`}
-                    {...formik.getFieldProps('vehicleModel')}
-                  />
-                  {formik.touched.vehicleModel && formik.errors.vehicleModel && (
-                    <p className="text-red-500 text-xs mt-1">{formik.errors.vehicleModel}</p>
-                  )}
-                </div>
+    {/* ADD VEHICLE TYPE SELECT */}
+    <div>
+      <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-700">
+        Vehicle Type
+      </label>
+      <select
+        id="vehicleType"
+        name="vehicleType"
+        className={`mt-1 block w-full px-3 py-2 border rounded-md ${
+          formik.touched.vehicleType && formik.errors.vehicleType
+            ? 'border-red-300'
+            : 'border-gray-300'
+        }`}
+        {...formik.getFieldProps('vehicleType')}
+      >
+        <option value="">Select vehicle type</option>
+        <option value="car">Car</option>
+        <option value="motorcycle">Motorcycle</option>
+        <option value="van">Van</option>
+        <option value="tuk-tuk">Tuk-tuk</option>
+        <option value="other">Other</option>
+      </select>
+      {formik.touched.vehicleType && formik.errors.vehicleType && (
+        <p className="text-red-500 text-xs mt-1">{formik.errors.vehicleType}</p>
+      )}
+    </div>
 
-                <div>
-                  <label htmlFor="vehicleColor" className="block text-sm font-medium text-gray-700">
-                    Vehicle Color
-                  </label>
-                  <input
-                    id="vehicleColor"
-                    name="vehicleColor"
-                    type="text"
-                    placeholder="e.g., Silver"
-                    className={`mt-1 block w-full px-3 py-2 border rounded-md ${
-                      formik.touched.vehicleColor && formik.errors.vehicleColor
-                        ? 'border-red-300'
-                        : 'border-gray-300'
-                    }`}
-                    {...formik.getFieldProps('vehicleColor')}
-                  />
-                  {formik.touched.vehicleColor && formik.errors.vehicleColor && (
-                    <p className="text-red-500 text-xs mt-1">{formik.errors.vehicleColor}</p>
-                  )}
-                </div>
+    <div>
+      <label htmlFor="vehicleModel" className="block text-sm font-medium text-gray-700">
+        Vehicle Model
+      </label>
+      <input
+        id="vehicleModel"
+        name="vehicleModel"
+        type="text"
+        placeholder="e.g., Toyota Camry"
+        className={`mt-1 block w-full px-3 py-2 border rounded-md ${
+          formik.touched.vehicleModel && formik.errors.vehicleModel
+            ? 'border-red-300'
+            : 'border-gray-300'
+        }`}
+        {...formik.getFieldProps('vehicleModel')}
+      />
+      {formik.touched.vehicleModel && formik.errors.vehicleModel && (
+        <p className="text-red-500 text-xs mt-1">{formik.errors.vehicleModel}</p>
+      )}
+    </div>
 
-                <div>
-                  <label htmlFor="vehiclePlate" className="block text-sm font-medium text-gray-700">
-                    License Plate
-                  </label>
-                  <input
-                    id="vehiclePlate"
-                    name="vehiclePlate"
-                    type="text"
-                    placeholder="ABC-123"
-                    className={`mt-1 block w-full px-3 py-2 border rounded-md ${
-                      formik.touched.vehiclePlate && formik.errors.vehiclePlate
-                        ? 'border-red-300'
-                        : 'border-gray-300'
-                    }`}
-                    {...formik.getFieldProps('vehiclePlate')}
-                  />
-                  {formik.touched.vehiclePlate && formik.errors.vehiclePlate && (
-                    <p className="text-red-500 text-xs mt-1">{formik.errors.vehiclePlate}</p>
-                  )}
-                </div>
-              </>
-            )}
+    <div>
+      <label htmlFor="vehicleColor" className="block text-sm font-medium text-gray-700">
+        Vehicle Color
+      </label>
+      <input
+        id="vehicleColor"
+        name="vehicleColor"
+        type="text"
+        placeholder="e.g., Silver"
+        className={`mt-1 block w-full px-3 py-2 border rounded-md ${
+          formik.touched.vehicleColor && formik.errors.vehicleColor
+            ? 'border-red-300'
+            : 'border-gray-300'
+        }`}
+        {...formik.getFieldProps('vehicleColor')}
+      />
+      {formik.touched.vehicleColor && formik.errors.vehicleColor && (
+        <p className="text-red-500 text-xs mt-1">{formik.errors.vehicleColor}</p>
+      )}
+    </div>
+
+    <div>
+      <label htmlFor="vehiclePlate" className="block text-sm font-medium text-gray-700">
+        License Plate
+      </label>
+      <input
+        id="vehiclePlate"
+        name="vehiclePlate"
+        type="text"
+        placeholder="ABC-123"
+        className={`mt-1 block w-full px-3 py-2 border rounded-md ${
+          formik.touched.vehiclePlate && formik.errors.vehiclePlate
+            ? 'border-red-300'
+            : 'border-gray-300'
+        }`}
+        {...formik.getFieldProps('vehiclePlate')}
+      />
+      {formik.touched.vehiclePlate && formik.errors.vehiclePlate && (
+        <p className="text-red-500 text-xs mt-1">{formik.errors.vehiclePlate}</p>
+      )}
+    </div>
+  </>
+)}
 
             {/* Password */}
             <div>
