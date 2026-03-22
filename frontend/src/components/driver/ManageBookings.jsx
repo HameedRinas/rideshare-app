@@ -38,7 +38,7 @@ const ManageBookings = () => {
     fetchData();
   }, [tripId]); // Only depends on tripId
 
-  const handleConfirmBooking = async (bookingId) => {
+/*  const handleConfirmBooking = async (bookingId) => {
     try {
       await bookingService.confirmBooking(bookingId);
       toast.success('Booking confirmed successfully');
@@ -80,7 +80,7 @@ const ManageBookings = () => {
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     );
-  };
+  };*/
 
   if (loading) {
     return (
