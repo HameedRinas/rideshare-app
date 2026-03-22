@@ -21,6 +21,7 @@ import PrivateRoute from './components/common/PrivateRoute';
 import AdminRoute from './components/common/AdminRoute';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword'; // ✅ ADD THIS IMPORT
+import ManageBookings from './components/driver/ManageBookings';
 
 // Public route - redirects to profile if already logged in
 const PublicRoute = ({ children }) => {
@@ -69,6 +70,8 @@ const AppRoutes = () => {
         <Route path="/my-trips" element={<MyTrips />} />
         <Route path="/create-trip" element={<CreateTrip />} />
         <Route path="/driver/verify" element={<DriverVerification />} />
+         <Route path="/driver/dashboard" element={<DriverDashboard />} />
+        <Route path="/driver/trip/:tripId/bookings" element={<ManageBookings />} />
       </Route>
 
       {/* Admin Routes - only for admin users */}
