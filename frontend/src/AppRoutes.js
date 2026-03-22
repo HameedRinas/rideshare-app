@@ -22,6 +22,7 @@ import AdminRoute from './components/common/AdminRoute';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword'; // ✅ ADD THIS IMPORT
 import ManageBookings from './components/driver/ManageBookings';
+import DriverDashboard from './components/driver/DriverDashboard';
 
 // Public route - redirects to profile if already logged in
 const PublicRoute = ({ children }) => {
