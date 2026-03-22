@@ -4,48 +4,87 @@ const crypto = require('crypto');
 const emailService = require('../services/emailService'); // Single import at the top
 
 const authController = {
-  async register(req, res, next) {
-    try {
-      console.log('Register request body:', req.body);
-      
-      const { email, universityEmail } = req.body;
+ async register(req, res, next) {
+  try {
+    console.log('========== REGISTER DEBUG ==========');
+    console.log('1. Request body:', JSON.stringify(req.body, null, 2));
+    
+    const { email, universityEmail } = req.body;
 
-      // Check if user exists
-      const existingUser = await User.findOne({
-        $or: [{ email }, { universityEmail }]
-      });
+    // Check if user exists
+    const existingUser = await User.findOne({
+      $or: [{ email }, { universityEmail }]
+    });
 
-      if (existingUser) {
-        return res.status(400).json({ error: 'User with this email already exists' });
-      }
-
-      // Create user
-      const user = new User(req.body);
-      await user.save();
-
-      // Generate token
-      const token = jwt.sign(
-        { userId: user._id }, 
-        process.env.JWT_SECRET, 
-        { expiresIn: '7d' }
-      );
-
-      // Get public profile
-      const userData = user.getPublicProfile();
-
-      console.log('User registered successfully:', userData);
-
-      res.status(201).json({
-        message: 'Registration successful',
-        token: token,
-        user: userData
-      });
-
-    } catch (error) {
-      console.error('Register error:', error);
-      next(error);
+    if (existingUser) {
+      console.log('2. User already exists:', existingUser.email);
+      return res.status(400).json({ error: 'User with this email already exists' });
     }
-  },
+
+    // Create user
+    console.log('3. Creating new user object...');
+    const user = new User(req.body);
+    
+    // Validate the user before saving
+    try {
+      console.log('4. Validating user...');
+      const validationError = user.validateSync();
+      if (validationError) {
+        console.log('5. Validation errors:', JSON.stringify(validationError.errors, null, 2));
+        const errors = Object.values(validationError.errors).map(err => err.message);
+        return res.status(400).json({ error: errors.join(', ') });
+      }
+      console.log('5. Validation passed');
+    } catch (validationErr) {
+      console.log('5. Validation exception:', validationErr);
+    }
+    
+    console.log('6. Saving user...');
+    await user.save();
+    console.log('7. User saved successfully');
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user._id }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '7d' }
+    );
+
+    // Get public profile
+    const userData = user.getPublicProfile();
+
+    console.log('8. Registration successful:', userData.email);
+    console.log('========================================');
+
+    res.status(201).json({
+      message: 'Registration successful',
+      token: token,
+      user: userData
+    });
+
+  } catch (error) {
+    console.error('========== REGISTER ERROR ==========');
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    
+    // Check for validation errors
+    if (error.name === 'ValidationError') {
+      console.error('Validation errors:', JSON.stringify(error.errors, null, 2));
+      const errors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ error: errors.join(', ') });
+    }
+    
+    // Check for duplicate key error
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      console.error('Duplicate key error on:', field);
+      return res.status(400).json({ error: `${field} already exists` });
+    }
+    
+    console.error('Error stack:', error.stack);
+    next(error);
+  }
+},
 
   async login(req, res, next) {
     try {
