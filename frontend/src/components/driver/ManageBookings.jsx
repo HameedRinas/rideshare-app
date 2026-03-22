@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
 import {
   CalendarIcon,
   MapPinIcon,
   CurrencyDollarIcon,
-  UserIcon,
-  EnvelopeIcon,
-  PhoneIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ArrowLeftIcon,
-  TruckIcon
+  ArrowLeftIcon
 } from '@heroicons/react/24/outline';
 import bookingService from '../../services/bookingService';
 import tripService from '../../services/tripService';
