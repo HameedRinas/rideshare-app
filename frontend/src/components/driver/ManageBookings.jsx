@@ -26,7 +26,7 @@ const ManageBookings = () => {
 
   useEffect(() => {
     fetchData();
-  }, [tripId]);
+  }, [fetchData]);
 
   const fetchData = async () => {
     try {

@@ -15,7 +15,6 @@ import {
 } from '@heroicons/react/24/outline';
 import tripService from '../../services/tripService';
 import bookingService from '../../services/bookingService';
-
 const DriverDashboard = () => {
   const { user } = useSelector((state) => state.auth);
   const [trips, setTrips] = useState([]);
