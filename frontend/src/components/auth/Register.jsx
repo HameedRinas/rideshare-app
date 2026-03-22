@@ -347,7 +347,7 @@ const Register = () => {
             )}
 
             {/* Driver-specific fields */}
-            {userType === 'driver' && (
+ {userType === 'driver' && (
   <>
     <div>
       <label htmlFor="driverLicense" className="block text-sm font-medium text-gray-700">
@@ -357,11 +357,7 @@ const Register = () => {
         id="driverLicense"
         name="driverLicense"
         type="text"
-        className={`mt-1 block w-full px-3 py-2 border rounded-md ${
-          formik.touched.driverLicense && formik.errors.driverLicense
-            ? 'border-red-300'
-            : 'border-gray-300'
-        }`}
+        className="mt-1 block w-full px-3 py-2 border rounded-md"
         {...formik.getFieldProps('driverLicense')}
       />
       {formik.touched.driverLicense && formik.errors.driverLicense && (
@@ -369,7 +365,7 @@ const Register = () => {
       )}
     </div>
 
-    {/* ADD VEHICLE TYPE SELECT */}
+    {/* ADD THIS - VEHICLE TYPE SELECT */}
     <div>
       <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-700">
         Vehicle Type
